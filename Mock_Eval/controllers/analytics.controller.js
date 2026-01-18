@@ -30,7 +30,9 @@ export const getTotalRevenue=((req,res)=>{
 
     const product=data.products.filter(el=>el.id===productId)
 
-    const filtered_product=product.filter(product.status==="cancelled")
+    const filtered_product=product.map(product.status==="cancelled")
+
+    console.log(filtered_product);
 
     res.status(200).json(filtered_product);
 
