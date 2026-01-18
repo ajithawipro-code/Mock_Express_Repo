@@ -50,20 +50,14 @@ export const getOrders=((req,res)=>{
 export const deleteOrders=((req,res)=>{
 
     const data=readData();
-    const currentDate=Number(req.body.createdAt);
+    const currentDate=req.body.createdAt;
 
-    if(data.orders.createdAt===currentDate)
-    {
 
-   data.orders=data.orders.filter(el=>el.createdAt===currentDate)
-    }
-
-   console.log(data.orders.createdAt);
-   console.log(currentDate);
-
-   data.orders.status=req.body.status;
+    const order=data.orders.find(el=>el.createdAt==currentDate)
+    
+    order.status=req.body.status;
    
-   writeData(data);
+    writeData(data);
 
    res.status(200).json("Order Cancelled");
 
@@ -75,9 +69,7 @@ export const updateOrders=((req,res)=>{
 
     const orderId=Number(req.params.orderId);
 
-    const order=data.orders.find(el=>el.id===orderId);
-
-    
+    const order=data.orders.find(el=>el.id===orderId);    
 
     console.log(order);    
    

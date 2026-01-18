@@ -33,7 +33,7 @@
       "productId": 2,
       "quantity": 5,
       "totalAmount": 30000,
-      "status": "placed",
+      "status": "cancelled",
       "createdAt": "2026-01-20"
     },
     {
