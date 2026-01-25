@@ -1,0 +1,69 @@
+import express from "express";
+import { supabase } from "../supabaseClient.js";
+
+export const OrderRoute = express.Router();
+
+OrderRoute.post("/add-order", async(req,res)=>{
+
+    const {product_name, quantity, price, customer_id} = req.body;
+
+    const {data,error} = await supabase.from("orders_1")
+                                       .insert([{product_name, quantity, price, customer_id}])
+                                       .select();
+    if(error)
+    {
+        return res.status(500).json({error: error.message});
+    }
+
+    res.status(200).json({message:"Order placed successfully", Order_Details: data});
+
+});
+
+
+OrderRoute.get("/get-my-orders/:customerId", async(req,res)=>{
+
+    const{customerId} = req.params;
+
+    const {data,error}= await supabase.from("orders_1")
+                                      .select("*")
+                                      .eq("customer_id",customerId);
+
+    if(error)
+    {
+        return res.status(500).json({error: error.message});
+    }
+  res.status(200).json({message: "All orders fecthed", Orders: data});
+});
+
+OrderRoute.put("/update-order/:orderId",async(req,res)=>{
+
+    const {orderId} = req.params;
+    const {quantity,price,order_status} = req.body;
+
+    const {data,error} = await supabase.from("orders_1")
+                                       .update({quantity,price,order_status})
+                                       .eq("id",orderId)
+                                       .select();
+    if(error)
+    {
+        return res.status(500).json({error: error.message});
+    }
+    res.status(200).json({message:"Order updated successfully", Updated_Order: data});
+
+});
+
+OrderRoute.delete("/delete-order/:orderId", async(req,res)=>{
+
+    const{orderId}=req.params;
+
+    const{data,error}= await supabase.from("orders_1")
+                                     .delete()
+                                     .eq("id",orderId)
+                                     .select();
+
+    if(error)
+    {
+        return res.status(500).json({error: error.message});
+    }
+    res.status(200).json({message:"Order Deleted", Deleted_Order: data});
+});
