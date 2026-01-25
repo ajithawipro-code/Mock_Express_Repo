@@ -4,6 +4,20 @@ export const createCustomer=(async(req,res)=>{
 
     const {full_name, email, phone} = req.body;
 
+    // const {data:existing, error: existerror} = await supabase.from("customers_1")                                                              
+    //                                                          .select()
+    //                                                           .eq("email",email);                                                          
+
+    //         if(existing)
+    //         {
+    //             return res.status(409).json("Email exists already");
+    //         }
+    //         if(existerror)
+    //         {
+    //             return res.status(500).json("Error", existerror.message);
+    //         }
+        
+
     const {data,error} = await supabase.from("customers_1")
                                        .insert([{full_name, email, phone}])
                                        .select();
